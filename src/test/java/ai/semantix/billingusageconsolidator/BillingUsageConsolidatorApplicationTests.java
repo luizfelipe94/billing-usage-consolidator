@@ -1,4 +1,4 @@
-package ai.semantix.billingusageconsolidator;
+package luizfelipe94.billingusageconsolidator;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

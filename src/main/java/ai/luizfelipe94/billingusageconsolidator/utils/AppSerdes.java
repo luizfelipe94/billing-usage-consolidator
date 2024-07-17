@@ -1,4 +1,4 @@
-package ai.semantix.billingusageconsolidator.utils;
+package luizfelipe94.billingusageconsolidator.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +7,7 @@ import org.apache.kafka.common.serialization.Serdes;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
 
-import ai.semantix.billingusageconsolidator.models.UsageAggregator;
+import luizfelipe94.billingusageconsolidator.models.UsageAggregator;
 
 public class AppSerdes extends Serdes {
 

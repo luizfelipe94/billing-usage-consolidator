@@ -1,4 +1,4 @@
-package ai.semantix.billingusageconsolidator;
+package luizfelipe94.billingusageconsolidator;
 
 import org.apache.kafka.streams.StreamsConfig;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;

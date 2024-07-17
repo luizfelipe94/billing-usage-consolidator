@@ -1,4 +1,4 @@
-package ai.semantix.billingusageconsolidator.models;
+package luizfelipe94.billingusageconsolidator.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

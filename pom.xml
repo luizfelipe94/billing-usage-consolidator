@@ -8,7 +8,7 @@
 		<version>3.2.4</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>ai.semantix</groupId>
+	<groupId>luizfelipe94</groupId>
 	<artifactId>billing-usage-consolidator</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>billing-usage-consolidator</name>

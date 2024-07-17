@@ -1,4 +1,4 @@
-package ai.semantix.billingusageconsolidator;
+package luizfelipe94.billingusageconsolidator;
 
 import java.time.Duration;
 import org.apache.kafka.streams.StreamsBuilder;
@@ -14,8 +14,8 @@ import org.apache.kafka.streams.kstream.Windowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.support.serializer.JsonSerde;
 import org.springframework.stereotype.Component;
-import ai.semantix.billingusageconsolidator.models.*;
-import ai.semantix.billingusageconsolidator.utils.AppSerdes;
+import luizfelipe94.billingusageconsolidator.models.*;
+import luizfelipe94.billingusageconsolidator.utils.AppSerdes;
 
 @Component
 public class EventStreamProcessor {

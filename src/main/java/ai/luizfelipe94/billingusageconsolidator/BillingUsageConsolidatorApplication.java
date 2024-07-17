@@ -1,4 +1,4 @@
-package ai.semantix.billingusageconsolidator;
+package luizfelipe94.billingusageconsolidator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
