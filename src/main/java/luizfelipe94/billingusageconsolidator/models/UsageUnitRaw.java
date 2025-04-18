@@ -17,7 +17,7 @@ class Tenant {
 }
 
 @Data
-class Module {
+class Product {
   private String id;
   private String name;
 }
@@ -33,7 +33,7 @@ public class UsageUnitRaw {
   private long usage;
   private Org org;
   private Tenant tenant;
-  private Module module;
+  private Product product;
 
   public String getOrgId() {
     return org.getId();
@@ -51,12 +51,12 @@ public class UsageUnitRaw {
     return tenant.getName();
   }
 
-  public String getModuleId() {
-    return module.getId();
+  public String getProductId() {
+    return product.getId();
   }
 
-  public String getModuleName() {
-    return module.getName();
+  public String getProductName() {
+    return product.getName();
   }
   
 }

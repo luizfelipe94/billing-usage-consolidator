@@ -15,8 +15,8 @@ public class UsageAggregator {
   private String orgName;
   private String tenantId;
   private String tenantName;
-  private String moduleId;
-  private String moduleName;
+  private String productId;
+  private String productName;
   private String measure;
   private String size;
   private long timestamp;

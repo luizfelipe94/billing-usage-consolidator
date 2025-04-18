@@ -57,8 +57,8 @@ public class EventStreamProcessor {
                   .orgName(unitValue.getOrgName())
                   .tenantId(unitValue.getTenantId())
                   .tenantName(unitValue.getTenantName())
-                  .moduleId(unitValue.getModuleId())
-                  .moduleName(unitValue.getModuleName())
+                  .productId(unitValue.getProductId())
+                  .productName(unitValue.getProductName())
                   .cost(price)
                   .message(message)
                   .build();
@@ -70,9 +70,9 @@ public class EventStreamProcessor {
 
     KTable<Windowed<String>, UsageAggregator> result = enriched
         .groupBy(
-            (k, v) -> v.getOrgId() + v.getTenantId() + v.getModuleId() + v.getMeasure() + v.getSize(),
+            (k, v) -> v.getOrgId() + v.getTenantId() + v.getProductId() + v.getMeasure() + v.getSize(),
             Grouped.with(AppSerdes.String(), new JsonSerde<>(UsageUnitEnriched.class)))
-        .windowedBy(TimeWindows.of(Duration.ofDays(1)))
+        .windowedBy(TimeWindows.of(Duration.ofMinutes(1)))
         .aggregate(
             // initializer
             () -> UsageAggregator.builder()
@@ -87,8 +87,8 @@ public class EventStreamProcessor {
                 .orgName(value.getOrgName())
                 .tenantId(value.getTenantId())
                 .tenantName(value.getTenantName())
-                .moduleId(value.getModuleId())
-                .moduleName(value.getModuleName())
+                .productId(value.getProductId())
+                .productName(value.getProductName())
                 .measure(value.getMeasure())
                 .size(value.getSize())
                 .timestamp(value.getTimestamp())
@@ -100,15 +100,3 @@ public class EventStreamProcessor {
   }
 
 }
-
-// private UsageAggregator aggregate(String key, String value, UsageAggregator aggregate) {
-//   try {
-//     UsageUnitEnriched usageUnitEnriched = objectMapper.readValue(value, UsageUnitEnriched.class);
-//     return UsageAggregator.builder()
-//         .totalCost(aggregate.getTotalCost() + usageUnitEnriched.getCost())
-//         .totalUsage(aggregate.getTotalUsage() + usageUnitEnriched.getUsage())
-//         .build();
-//   } catch (JsonProcessingException e) {
-//     return UsageAggregator.builder().build();
-//   }
-// }

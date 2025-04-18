@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: billing-usage-consolidator
+  labels:
+    app: billing-usage-consolidator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: billing-usage-consolidator
+  template:
+    metadata:
+      labels:
+        app: billing-usage-consolidator
+    spec:
+      containers:
+      - name: billing-usage-consolidator
+        image: billing.localhost/billing-usage-consolidator:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: KAFKA_BROKERS
+          value: "billing-kafka-bootstrap:9092"
+        - name: SPRING_APPLICATION_NAME
+          value: "billing-usage-consolidator"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: billing-usage-consolidator
+  labels:
+    app: billing-usage-consolidator
+spec:
+  selector:
+    app: billing-usage-consolidator
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+  type: ClusterIP

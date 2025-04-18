@@ -1,0 +1,74 @@
+services:
+  
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:7.2.1
+    networks: 
+      - kafka
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka:7.2.1
+    networks: 
+      - kafka
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+  
+  kafka-ui:
+    container_name: kafka-ui
+    image: provectuslabs/kafka-ui:latest
+    networks:
+      - kafka
+    ports:
+      - 8080:8080
+    depends_on:
+      - kafka
+      - zookeeper
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092
+      DYNAMIC_CONFIG_ENABLED: 'true'
+
+  kafka-init-topics:
+    container_name: init_topics
+    image: confluentinc/cp-kafka:7.2.1
+    networks:
+      - kafka
+    volumes:
+       - ./data/prices.json:/data/prices.json
+    depends_on:
+      - kafka
+      - kafka-ui
+    command: "bash -c 'echo Waiting for Kafka to be ready... && \
+               cub kafka-ready -b kafka:29092 1 30 && \
+               kafka-topics --create --topic billing-usage-pricing --partitions 4 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092 --config cleanup.policy=compact && \
+               kafka-topics --create --topic billing-usage-unit-raw --partitions 4 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092 && \
+               kafka-topics --create --topic billing-usage-unit-enriched --partitions 4 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092 && \
+               kafka-topics --create --topic billing-usage-aggregation --partitions 4 --replication-factor 1 --if-not-exists --bootstrap-server kafka:29092 && \
+               kafka-console-producer --bootstrap-server kafka:29092 --topic billing-usage-pricing < /data/prices.json'"
+  
+  # billing-consolidator:
+  #   container_name: billing_consolidator
+  #   build: .
+  #   networks:
+  #     - kafka
+  #   depends_on:
+  #     - kafka
+  #     - kafka-init-topics
+  #   environment:
+  #     KAFKA_BROKERS: kafka:29092
+
+networks:
+  kafka:
